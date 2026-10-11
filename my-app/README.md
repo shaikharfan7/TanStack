@@ -25,6 +25,11 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
+To enable Google Analytics 4, set `VITE_GA_MEASUREMENT_ID` in `.env` to your
+Measurement ID (for example, `G-XXXXXXXXXX`). The ID is public in the browser
+bundle, not a secret. Leave it empty to disable analytics locally. Configure
+the same variable in Render and redeploy to enable it for the deployed app.
+
 The seed script can be run more than once; it adds missing products and updates their descriptions without duplicating existing rows.
 
 ## Build

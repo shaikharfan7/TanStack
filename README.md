@@ -32,6 +32,11 @@ Create a local environment file if you don’t already have one:
 cp .env.example .env
 ```
 
+To enable Google Analytics 4, set `VITE_GA_MEASUREMENT_ID` in `my-app/.env`
+to your Measurement ID (for example, `G-XXXXXXXXXX`). This ID is included in
+the browser bundle, so it is not a secret. Set the same variable in Render and
+redeploy; leave it empty to disable analytics locally.
+
 Prepare and seed the SQLite database, then start the development server:
 
 ```bash
