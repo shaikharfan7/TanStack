@@ -24,6 +24,12 @@ export default function Header() {
           >
             About
           </Link>
+          <Link
+            to="/query"
+            className="rounded-full px-3 py-2 text-sm font-semibold text-[var(--sea-ink-soft)] transition hover:bg-[var(--link-bg-hover)] hover:text-[var(--sea-ink)]"
+          >
+            Query
+          </Link>
           <ThemeToggle />
         </div>
       </nav>
