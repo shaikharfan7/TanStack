@@ -1,40 +1,27 @@
-import { useQueryClient } from '@tanstack/react-query'
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { createFileRoute } from '@tanstack/react-router'
 import { useForm } from '@tanstack/react-form'
 import { useState } from 'react'
-import { createProduct } from '../utils'
 
 export const Route = createFileRoute('/form')({
   component: FormDemo,
 })
 
 function FormDemo() {
-  const queryClient = useQueryClient()
-  const [createdProduct, setCreatedProduct] = useState<{
-    id: string
+  const [submittedValues, setSubmittedValues] = useState<{
     name: string
+    description: string
   } | null>(null)
-  const [submitError, setSubmitError] = useState<string | null>(null)
 
   const form = useForm({
     defaultValues: {
       name: '',
       description: '',
     },
-    onSubmit: async ({ value }) => {
-      setSubmitError(null)
-      setCreatedProduct(null)
-
-      try {
-        const product = await createProduct({ data: value })
-        setCreatedProduct({ id: product.id, name: product.name })
-        await queryClient.invalidateQueries({ queryKey: ['products'] })
-        form.reset()
-      } catch (error) {
-        setSubmitError(
-          error instanceof Error ? error.message : 'Could not create the product.',
-        )
-      }
+    onSubmit: ({ value }) => {
+      setSubmittedValues({
+        name: value.name.trim(),
+        description: value.description.trim(),
+      })
     },
   })
 
@@ -48,9 +35,9 @@ function FormDemo() {
           TanStack Form
         </h1>
         <p className="mt-3 max-w-2xl leading-7 text-[var(--sea-ink-soft)]">
-          Create a product with type-safe fields, inline validation, and a server
-          submission. On success, the shared products query is invalidated so
-          other product demos can pick up the new item.
+          Explore type-safe fields, inline validation, and submission state.
+          Submitted values stay in this page’s memory as a preview; nothing is
+          sent to the server or saved in the database.
         </p>
       </section>
 
@@ -64,7 +51,7 @@ function FormDemo() {
           }}
         >
           <div className="mb-6">
-            <h2 className="text-xl font-bold text-[var(--sea-ink)]">Add a product</h2>
+            <h2 className="text-xl font-bold text-[var(--sea-ink)]">Product form</h2>
             <p className="mt-1 text-sm text-[var(--sea-ink-soft)]">
               Name is required; description is optional.
             </p>
@@ -151,12 +138,6 @@ function FormDemo() {
             </form.Field>
           </div>
 
-          {submitError && (
-            <p role="alert" className="mt-5 rounded-xl border border-red-400/30 bg-red-500/5 p-3 text-sm text-red-700 dark:text-red-200">
-              {submitError}
-            </p>
-          )}
-
           <form.Subscribe
             selector={(state) => [state.canSubmit, state.isSubmitting] as const}
           >
@@ -166,7 +147,7 @@ function FormDemo() {
                 disabled={!canSubmit || isSubmitting}
                 className="mt-6 rounded-full bg-[var(--palm)] px-5 py-3 text-sm font-bold text-white shadow-lg shadow-emerald-950/15 transition hover:-translate-y-0.5 hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50"
               >
-                {isSubmitting ? 'Saving product…' : 'Create product'}
+                {isSubmitting ? 'Submitting…' : 'Preview submitted values'}
               </button>
             )}
           </form.Subscribe>
@@ -178,25 +159,25 @@ function FormDemo() {
           </p>
           <h2 className="text-xl font-bold text-[var(--sea-ink)]">Submit and see what happens</h2>
           <p className="mt-2 text-sm leading-6 text-[var(--sea-ink-soft)]">
-            TanStack Form tracks each field, runs validation, manages submission,
-            and keeps the UI in sync with the current form state.
+            TanStack Form tracks each field, runs validation, and manages
+            submission. Only the latest submission is kept in React state.
           </p>
 
-          {createdProduct ? (
+          {submittedValues ? (
             <div role="status" className="mt-6 rounded-2xl border border-[var(--chip-line)] bg-[var(--chip-bg)] p-4">
-              <p className="font-bold text-[var(--sea-ink)]">Product created successfully</p>
-              <Link
-                to="/product/$id"
-                params={{ id: createdProduct.id }}
-                className="mt-2 inline-flex items-center gap-2 text-sm font-semibold text-[var(--lagoon-deep)] hover:underline"
-              >
-                View {createdProduct.name} <span aria-hidden="true">→</span>
-              </Link>
+              <p className="font-bold text-[var(--sea-ink)]">Submitted preview</p>
+              <p className="mt-3 font-semibold text-[var(--sea-ink)]">{submittedValues.name}</p>
+              <p className="mt-1 text-sm leading-6 text-[var(--sea-ink-soft)]">
+                {submittedValues.description || 'No description provided.'}
+              </p>
+              <p className="mt-3 text-xs font-semibold uppercase tracking-wide text-[var(--kicker)]">
+                In memory only · not saved
+              </p>
             </div>
           ) : (
             <div className="mt-6 rounded-2xl border border-dashed border-[var(--line)] p-4 text-sm leading-6 text-[var(--sea-ink-soft)]">
-              After a successful submit, the new product is saved to SQLite and
-              appears in the Products, Query, and Table demos.
+              Submit the form to preview the values here. Submitting again
+              replaces this preview; no database records are created.
             </div>
           )}
         </aside>

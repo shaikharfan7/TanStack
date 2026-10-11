@@ -18,25 +18,6 @@ export const getProductById = createServerFn()
   })
 })
 
-export const createProduct = createServerFn({ method: 'POST' })
-  .validator((data: { name: string; description: string }) => {
-    const name = data.name.trim()
-    const description = data.description.trim()
-
-    if (name.length === 0 || name.length > 80) {
-      throw new Error('Product name must be between 1 and 80 characters.')
-    }
-
-    if (description.length > 240) {
-      throw new Error('Description must be 240 characters or fewer.')
-    }
-
-    return { name, description }
-  })
-  .handler(async ({ data }) => {
-    return prisma.product.create({ data })
-  })
-
 // export const getProducts = async () => {
 //   return prisma.product.findMany({
 //     orderBy: { name: 'asc' },

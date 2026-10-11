@@ -33,7 +33,7 @@ function About() {
     },
     {
       name: 'TanStack Form',
-      description: 'Type-safe product creation with field validation and server submission.',
+      description: 'Type-safe form state and validation with an in-memory submission preview.',
       mark: '✓',
     },
     {
