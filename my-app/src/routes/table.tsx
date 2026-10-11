@@ -23,6 +23,10 @@ const columns: ColumnDef<Product>[] = [
     header: 'Product',
   },
   {
+    accessorKey: 'description',
+    header: 'Description',
+  },
+  {
     accessorKey: 'id',
     header: 'ID',
     cell: ({ getValue }) => (

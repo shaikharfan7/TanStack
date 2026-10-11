@@ -28,12 +28,15 @@ function Products() {
               <Link
                 to="/product/$id"
                 params={{ id: product.id }}
-                className="group flex min-h-36 flex-col justify-between rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-5 shadow-sm transition hover:-translate-y-1 hover:border-[var(--lagoon)] hover:bg-[var(--surface-strong)] hover:shadow-lg"
+                className="group flex min-h-44 flex-col rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-5 shadow-sm transition hover:-translate-y-1 hover:border-[var(--lagoon)] hover:bg-[var(--surface-strong)] hover:shadow-lg"
               >
-                <span className="mb-6 flex size-10 items-center justify-center rounded-xl bg-[var(--hero-a)] text-lg text-[var(--palm)]">✦</span>
+                <span className="mb-5 flex size-10 items-center justify-center rounded-xl bg-[var(--hero-a)] text-lg text-[var(--palm)]">✦</span>
                 <span className="flex items-center justify-between gap-3 font-bold text-[var(--sea-ink)]">
                   {product.name}
                   <span className="text-[var(--lagoon-deep)] transition-transform group-hover:translate-x-1">→</span>
+                </span>
+                <span className="mt-2 text-sm leading-6 text-[var(--sea-ink-soft)]">
+                  {product.description}
                 </span>
               </Link>
             </li>
