@@ -1,4 +1,4 @@
-# Learning TanStack / author: shaikharfan7@gmail.com | arfan@softwareosity.com
+# Learning TanStack
 
 Framework Used (ITS AMAZING, CHECK IT OUT): https://github.com/TanStack
 
@@ -45,3 +45,5 @@ If you prefer not to use Tailwind CSS:
 1. Remove the demo pages in `src/routes/demo/`
 2. Replace the Tailwind import in `src/styles.css` with your own styles
 5. Deploy
+
+ # author: shaikharfan7@gmail.com | arfan@softwareosity.com
