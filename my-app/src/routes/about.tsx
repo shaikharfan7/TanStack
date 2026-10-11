@@ -32,6 +32,11 @@ function About() {
       mark: '⌁',
     },
     {
+      name: 'TanStack Form',
+      description: 'Type-safe product creation with field validation and server submission.',
+      mark: '✓',
+    },
+    {
       name: 'Prisma + SQLite',
       description: 'A simple local database for the product browsing example.',
       mark: '◈',

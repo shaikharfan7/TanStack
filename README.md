@@ -14,6 +14,7 @@ Learning TanStack by coding manually for fun. This is a small TanStack Start pla
 - TanStack Table sorting, filtering, and pagination
 - TanStack Virtual for long lists
 - TanStack Ranger interactive range slider
+- TanStack Form product creation with validation
 - Tailwind CSS styling and light/dark theme toggle
 
 ## Run locally

@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as FormRouteImport } from './routes/form'
 import { Route as ProductsRouteImport } from './routes/products'
 import { Route as QueryRouteImport } from './routes/query'
 import { Route as RangerRouteImport } from './routes/ranger'
@@ -27,6 +28,11 @@ const IndexRoute = IndexRouteImport.update({
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FormRoute = FormRouteImport.update({
+  id: '/form',
+  path: '/form',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProductsRoute = ProductsRouteImport.update({
@@ -68,6 +74,7 @@ const ProductIdRoute = ProductIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/form': typeof FormRoute
   '/products': typeof ProductsRoute
   '/query': typeof QueryRoute
   '/ranger': typeof RangerRoute
@@ -79,6 +86,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/form': typeof FormRoute
   '/products': typeof ProductsRoute
   '/query': typeof QueryRoute
   '/ranger': typeof RangerRoute
@@ -91,6 +99,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/form': typeof FormRoute
   '/products': typeof ProductsRoute
   '/query': typeof QueryRoute
   '/ranger': typeof RangerRoute
@@ -104,6 +113,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/form'
     | '/products'
     | '/query'
     | '/ranger'
@@ -115,6 +125,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/form'
     | '/products'
     | '/query'
     | '/ranger'
@@ -126,6 +137,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
+    | '/form'
     | '/products'
     | '/query'
     | '/ranger'
@@ -138,6 +150,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  FormRoute: typeof FormRoute
   ProductsRoute: typeof ProductsRoute
   QueryRoute: typeof QueryRoute
   RangerRoute: typeof RangerRoute
@@ -161,6 +174,13 @@ declare module '@tanstack/react-router' {
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/form': {
+      id: '/form'
+      path: '/form'
+      fullPath: '/form'
+      preLoaderRoute: typeof FormRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/products': {
@@ -218,6 +238,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  FormRoute: FormRoute,
   ProductsRoute: ProductsRoute,
   QueryRoute: QueryRoute,
   RangerRoute: RangerRoute,

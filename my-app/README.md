@@ -10,6 +10,7 @@ Learning TanStack by coding manually for fun. This TanStack Start playground exp
 - TanStack Table sorting, filtering, and pagination
 - TanStack Virtual list rendering
 - TanStack Ranger range slider
+- TanStack Form product creation with validation
 - Tailwind CSS and a theme toggle
 
 ## Run locally
