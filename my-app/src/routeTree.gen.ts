@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as ProductsRouteImport } from './routes/products'
 import { Route as QueryRouteImport } from './routes/query'
+import { Route as RangerRouteImport } from './routes/ranger'
 import { Route as TableRouteImport } from './routes/table'
 import { Route as VirtualRouteImport } from './routes/virtual'
 import { Route as ApiProductsRouteImport } from './routes/api/products'
@@ -36,6 +37,11 @@ const ProductsRoute = ProductsRouteImport.update({
 const QueryRoute = QueryRouteImport.update({
   id: '/query',
   path: '/query',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RangerRoute = RangerRouteImport.update({
+  id: '/ranger',
+  path: '/ranger',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TableRoute = TableRouteImport.update({
@@ -64,6 +70,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/products': typeof ProductsRoute
   '/query': typeof QueryRoute
+  '/ranger': typeof RangerRoute
   '/table': typeof TableRoute
   '/virtual': typeof VirtualRoute
   '/api/products': typeof ApiProductsRoute
@@ -74,6 +81,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/products': typeof ProductsRoute
   '/query': typeof QueryRoute
+  '/ranger': typeof RangerRoute
   '/table': typeof TableRoute
   '/virtual': typeof VirtualRoute
   '/api/products': typeof ApiProductsRoute
@@ -85,6 +93,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/products': typeof ProductsRoute
   '/query': typeof QueryRoute
+  '/ranger': typeof RangerRoute
   '/table': typeof TableRoute
   '/virtual': typeof VirtualRoute
   '/api/products': typeof ApiProductsRoute
@@ -97,6 +106,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/products'
     | '/query'
+    | '/ranger'
     | '/table'
     | '/virtual'
     | '/api/products'
@@ -107,6 +117,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/products'
     | '/query'
+    | '/ranger'
     | '/table'
     | '/virtual'
     | '/api/products'
@@ -117,6 +128,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/products'
     | '/query'
+    | '/ranger'
     | '/table'
     | '/virtual'
     | '/api/products'
@@ -128,6 +140,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   ProductsRoute: typeof ProductsRoute
   QueryRoute: typeof QueryRoute
+  RangerRoute: typeof RangerRoute
   TableRoute: typeof TableRoute
   VirtualRoute: typeof VirtualRoute
   ApiProductsRoute: typeof ApiProductsRoute
@@ -162,6 +175,13 @@ declare module '@tanstack/react-router' {
       path: '/query'
       fullPath: '/query'
       preLoaderRoute: typeof QueryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ranger': {
+      id: '/ranger'
+      path: '/ranger'
+      fullPath: '/ranger'
+      preLoaderRoute: typeof RangerRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/table': {
@@ -200,6 +220,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   ProductsRoute: ProductsRoute,
   QueryRoute: QueryRoute,
+  RangerRoute: RangerRoute,
   TableRoute: TableRoute,
   VirtualRoute: VirtualRoute,
   ApiProductsRoute: ApiProductsRoute,
