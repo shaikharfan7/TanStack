@@ -1,4 +1,6 @@
-Welcome to your new TanStack Start app!
+# Learning TanStack / author: shaikharfan7@gmail.com | arfan@softwareosity.com
+
+Demo link: https://tanstack-6hzx.onrender.com/
 
 # Getting Started
 
