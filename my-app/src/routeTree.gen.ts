@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as ProductsRouteImport } from './routes/products'
 import { Route as QueryRouteImport } from './routes/query'
+import { Route as TableRouteImport } from './routes/table'
 import { Route as ApiProductsRouteImport } from './routes/api/products'
 import { Route as ProductIdRouteImport } from './routes/product.$id'
 
@@ -36,6 +37,11 @@ const QueryRoute = QueryRouteImport.update({
   path: '/query',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TableRoute = TableRouteImport.update({
+  id: '/table',
+  path: '/table',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiProductsRoute = ApiProductsRouteImport.update({
   id: '/api/products',
   path: '/api/products',
@@ -52,6 +58,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/products': typeof ProductsRoute
   '/query': typeof QueryRoute
+  '/table': typeof TableRoute
   '/api/products': typeof ApiProductsRoute
   '/product/$id': typeof ProductIdRoute
 }
@@ -60,6 +67,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/products': typeof ProductsRoute
   '/query': typeof QueryRoute
+  '/table': typeof TableRoute
   '/api/products': typeof ApiProductsRoute
   '/product/$id': typeof ProductIdRoute
 }
@@ -69,21 +77,36 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/products': typeof ProductsRoute
   '/query': typeof QueryRoute
+  '/table': typeof TableRoute
   '/api/products': typeof ApiProductsRoute
   '/product/$id': typeof ProductIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/about' | '/products' | '/query' | '/api/products' | '/product/$id'
+    | '/'
+    | '/about'
+    | '/products'
+    | '/query'
+    | '/table'
+    | '/api/products'
+    | '/product/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/products' | '/query' | '/api/products' | '/product/$id'
+  to:
+    | '/'
+    | '/about'
+    | '/products'
+    | '/query'
+    | '/table'
+    | '/api/products'
+    | '/product/$id'
   id:
     | '__root__'
     | '/'
     | '/about'
     | '/products'
     | '/query'
+    | '/table'
     | '/api/products'
     | '/product/$id'
   fileRoutesById: FileRoutesById
@@ -93,6 +116,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   ProductsRoute: typeof ProductsRoute
   QueryRoute: typeof QueryRoute
+  TableRoute: typeof TableRoute
   ApiProductsRoute: typeof ApiProductsRoute
   ProductIdRoute: typeof ProductIdRoute
 }
@@ -127,6 +151,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof QueryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/table': {
+      id: '/table'
+      path: '/table'
+      fullPath: '/table'
+      preLoaderRoute: typeof TableRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/products': {
       id: '/api/products'
       path: '/api/products'
@@ -149,6 +180,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   ProductsRoute: ProductsRoute,
   QueryRoute: QueryRoute,
+  TableRoute: TableRoute,
   ApiProductsRoute: ApiProductsRoute,
   ProductIdRoute: ProductIdRoute,
 }
