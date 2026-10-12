@@ -35,6 +35,9 @@ function Products() {
                   {product.name}
                   <span className="text-[var(--lagoon-deep)] transition-transform group-hover:translate-x-1">→</span>
                 </span>
+                <span className="mt-2 font-bold text-[var(--palm)]">
+                  ${product.price.toLocaleString()}
+                </span>
                 <span className="mt-2 text-sm leading-6 text-[var(--sea-ink-soft)]">
                   {product.description}
                 </span>

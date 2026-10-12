@@ -18,6 +18,8 @@ const products = [
   { name: 'Badminton Set', description: 'A ready-to-play set with rackets and shuttlecocks for two.' },
 ]
 
+const randomPrice = () => Math.floor(Math.random() * 97 + 4) * 5
+
 let addedCount = 0
 let updatedCount = 0
 
@@ -25,22 +27,42 @@ try {
   for (const product of products) {
     const existingProduct = await prisma.product.findFirst({
       where: { name: product.name },
-      select: { id: true, description: true },
+      select: { id: true, description: true, price: true },
     })
 
     if (!existingProduct) {
-      await prisma.product.create({ data: product })
+      await prisma.product.create({
+        data: { ...product, price: randomPrice() },
+      })
       addedCount += 1
-    } else if (existingProduct.description !== product.description) {
+    } else if (existingProduct.description !== product.description || existingProduct.price <= 0) {
       await prisma.product.update({
         where: { id: existingProduct.id },
-        data: { description: product.description },
+        data: {
+          description: product.description,
+          ...(existingProduct.price <= 0 ? { price: randomPrice() } : {}),
+        },
       })
       updatedCount += 1
     }
   }
 
-  console.log(`Seeded ${addedCount} new products and updated ${updatedCount} descriptions.`)
+  const unpricedProducts = await prisma.product.findMany({
+    where: { price: { lte: 0 } },
+    select: { id: true },
+  })
+
+  for (const product of unpricedProducts) {
+    await prisma.product.update({
+      where: { id: product.id },
+      data: { price: randomPrice() },
+    })
+    updatedCount += 1
+  }
+
+  console.log(
+    `Seeded ${addedCount} new products and updated ${updatedCount} existing products.`,
+  )
 } finally {
   await prisma.$disconnect()
 }

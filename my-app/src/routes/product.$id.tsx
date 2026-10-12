@@ -19,6 +19,7 @@ function RouteComponent() {
           <article className="rounded-3xl border border-[var(--line)] bg-[var(--surface-strong)] p-6 shadow-lg shadow-emerald-950/5 sm:p-10">
             <p className="mb-2 text-sm font-bold uppercase tracking-[0.2em] text-[var(--kicker)]">Product details</p>
             <h1 className="mb-3 text-3xl font-extrabold tracking-tight text-[var(--sea-ink)] sm:text-5xl">{product.name}</h1>
+            <p className="mb-3 text-xl font-bold text-[var(--palm)]">${product.price.toLocaleString()}</p>
             <p className="mb-6 max-w-2xl text-base leading-7 text-[var(--sea-ink-soft)]">{product.description}</p>
             <p className="text-sm text-[var(--sea-ink-soft)]">Last updated {product.updatedAt.toDateString()}</p>
           </article>

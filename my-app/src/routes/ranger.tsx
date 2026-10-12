@@ -1,7 +1,9 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { useQuery } from '@tanstack/react-query'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import { useRanger } from '@tanstack/react-ranger'
 import { useRef, useState } from 'react'
 import type { Ranger } from '@tanstack/react-ranger'
+import { getProducts } from '../utils'
 
 export const Route = createFileRoute('/ranger')({
   component: RangerDemo,
@@ -12,8 +14,12 @@ const MAX_PRICE = 1_000
 const PRICE_TICKS = [0, 250, 500, 750, 1_000]
 
 function RangerDemo() {
+  const productsQuery = useQuery({
+    queryKey: ['products'],
+    queryFn: () => getProducts(),
+  })
   const trackRef = useRef<HTMLDivElement>(null)
-  const [values, setValues] = useState<ReadonlyArray<number>>([200, 700])
+  const [values, setValues] = useState<ReadonlyArray<number>>([0, MAX_PRICE])
   const ranger = useRanger<HTMLDivElement>({
     getRangerElement: () => trackRef.current,
     values,
@@ -30,6 +36,9 @@ function RangerDemo() {
   })
 
   const [lowPrice, highPrice] = ranger.sortedValues
+  const filteredProducts = (productsQuery.data ?? []).filter(
+    (product) => product.price >= lowPrice && product.price <= highPrice,
+  )
 
   return (
     <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-12 sm:py-16">
@@ -41,9 +50,8 @@ function RangerDemo() {
           TanStack Ranger
         </h1>
         <p className="mt-3 max-w-2xl leading-7 text-[var(--sea-ink-soft)]">
-          Ranger provides the behavior for this multi-handle slider; the track,
-          handles, labels, and styling are rendered by this page. Drag either
-          handle or focus it and use the arrow keys.
+          Set a minimum and maximum price to filter the actual products in the
+          database. Drag either handle or focus it and use the arrow keys.
         </p>
       </section>
 
@@ -57,7 +65,7 @@ function RangerDemo() {
           </div>
           <button
             type="button"
-            onClick={() => setValues([200, 700])}
+            onClick={() => setValues([MIN_PRICE, MAX_PRICE])}
             className="rounded-full border border-[var(--chip-line)] bg-[var(--chip-bg)] px-4 py-2 text-sm font-semibold text-[var(--sea-ink)] transition hover:bg-[var(--link-bg-hover)]"
           >
             Reset range
@@ -116,6 +124,56 @@ function RangerDemo() {
           Values snap in $25 increments between $0 and $1,000. Try dragging
           either handle, or tab to it and use the left/right arrow keys.
         </p>
+      </section>
+
+      <section className="mt-6 rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-6 shadow-sm sm:p-8">
+        <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
+          <div>
+            <p className="text-sm font-semibold text-[var(--sea-ink-soft)]">Matching products</p>
+            <h2 className="mt-1 text-2xl font-extrabold text-[var(--sea-ink)]">
+              ${lowPrice?.toLocaleString()} – ${highPrice?.toLocaleString()}
+            </h2>
+          </div>
+          {productsQuery.isSuccess && (
+            <p className="rounded-full bg-[var(--chip-bg)] px-3 py-1.5 text-sm font-semibold text-[var(--sea-ink-soft)]">
+              {filteredProducts.length} of {productsQuery.data.length} products
+            </p>
+          )}
+        </div>
+
+        {productsQuery.isPending ? (
+          <p className="py-6 text-[var(--sea-ink-soft)]">Loading products…</p>
+        ) : productsQuery.isError ? (
+          <p role="alert" className="py-6 text-sm text-red-700 dark:text-red-200">
+            Could not load products: {productsQuery.error.message}
+          </p>
+        ) : filteredProducts.length > 0 ? (
+          <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {filteredProducts.map((product) => (
+              <li key={product.id}>
+                <Link
+                  to="/product/$id"
+                  params={{ id: product.id }}
+                  className="group flex h-full items-start justify-between gap-3 rounded-2xl border border-[var(--line)] bg-[var(--surface-strong)] p-4 transition hover:-translate-y-0.5 hover:border-[var(--lagoon)] hover:shadow-md"
+                >
+                  <span className="min-w-0">
+                    <span className="block font-semibold text-[var(--sea-ink)]">{product.name}</span>
+                    <span className="mt-1 line-clamp-2 block text-sm leading-5 text-[var(--sea-ink-soft)]">
+                      {product.description}
+                    </span>
+                  </span>
+                  <span className="shrink-0 font-bold text-[var(--palm)]">
+                    ${product.price.toLocaleString()}
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="rounded-2xl border border-dashed border-[var(--line)] p-5 text-sm text-[var(--sea-ink-soft)]">
+            No products fall within this price range. Adjust the slider to see more.
+          </p>
+        )}
       </section>
     </main>
   )

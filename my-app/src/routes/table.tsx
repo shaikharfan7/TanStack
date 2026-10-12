@@ -27,6 +27,11 @@ const columns: ColumnDef<Product>[] = [
     header: 'Description',
   },
   {
+    accessorKey: 'price',
+    header: 'Price',
+    cell: ({ getValue }) => `$${Number(getValue()).toLocaleString()}`,
+  },
+  {
     accessorKey: 'id',
     header: 'ID',
     cell: ({ getValue }) => (

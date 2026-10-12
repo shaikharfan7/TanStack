@@ -11,6 +11,7 @@ model Product {
   id          String   @id @default(cuid())
   name        String
   description String   @default("")
+  price       Float    @default(0)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
